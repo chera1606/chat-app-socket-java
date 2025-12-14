@@ -1,3 +1,7 @@
+// ChatClient.java
+// A simple TCP chat client
+// Connects to server and sends/receives messages
+
 import java.io.*;
 import java.net.*;
 
