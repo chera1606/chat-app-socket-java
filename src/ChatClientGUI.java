@@ -32,15 +32,19 @@ public class ChatClientGUI {
             scrollPane.setBounds(10, 10, 360, 400);
 
             JTextField inputField = new JTextField();
-            inputField.setBounds(10, 420, 260, 30);
+            inputField.setBounds(10, 420, 180, 30);
 
             JButton sendButton = new JButton("Send");
-            sendButton.setBounds(280, 420, 90, 30);
+            sendButton.setBounds(200, 420, 80, 30);
+
+            JButton exitButton = new JButton("Exit");
+            exitButton.setBounds(290, 420, 80, 30);
 
             chatFrame.setLayout(null);
             chatFrame.add(scrollPane);
             chatFrame.add(inputField);
             chatFrame.add(sendButton);
+            chatFrame.add(exitButton);
 
             chatFrame.setSize(400, 500);
             chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,6 +77,16 @@ public class ChatClientGUI {
                         ex.printStackTrace();
                     }
                 }).start();
+
+                // Exit button action
+                exitButton.addActionListener(ev -> {
+                    try {
+                        socket.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    chatFrame.dispose();
+                });
 
             } catch (IOException ex) {
                 ex.printStackTrace();
