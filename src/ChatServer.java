@@ -61,9 +61,7 @@ class ClientHandler extends Thread {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            // <-- remove any prompt sent to client
-            // out.println("Enter your name: ");  // REMOVE THIS LINE
-            name = in.readLine(); // read name sent from login GUI
+        
             System.out.println(name + " joined the chat");
             ChatServer.broadcast(name + " has joined the chat!", this);
 
