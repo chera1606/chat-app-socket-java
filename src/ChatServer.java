@@ -63,7 +63,7 @@ class ClientHandler extends Thread {
 
         
             System.out.println(name + " joined the chat");
-            ChatServer.broadcast(name + " has joined the chat!", this);
+            ChatServer.broadcast(name + " has joined the chat!", this);   
 
             String message;
             while ((message = in.readLine()) != null) {
