@@ -46,10 +46,13 @@ public class ChatClientGUI {
             chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             chatFrame.setVisible(true);
 
-            // Connect to server and send username
             try {
+                // Connect to server
                 Socket socket = new Socket("localhost", 5000);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                // Send username to server
                 out.println(username);
 
                 // Send button action
@@ -57,6 +60,19 @@ public class ChatClientGUI {
                     out.println(inputField.getText());
                     inputField.setText("");
                 });
+
+                // Thread to receive messages from server
+                new Thread(() -> {
+                    String message;
+                    try {
+                        while ((message = in.readLine()) != null) {
+                            chatArea.append(message + "\n");
+                            chatArea.setCaretPosition(chatArea.getDocument().getLength());
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }).start();
 
             } catch (IOException ex) {
                 ex.printStackTrace();
