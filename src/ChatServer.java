@@ -7,20 +7,20 @@ import java.net.*;
 import java.util.*;
 
 public class ChatServer {
+
     private static Set<ClientHandler> clientHandlers = new HashSet<>();
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(5000)) {
-            System.out.println("Server started... Waiting for clients...");
+            System.out.println("Server started on port 5000");
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                System.out.println("A new client connected!");
-
                 ClientHandler client = new ClientHandler(socket);
                 clientHandlers.add(client);
                 client.start();
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,6 +32,10 @@ public class ChatServer {
                 client.sendMessage(message);
             }
         }
+    }
+
+    public static void removeClient(ClientHandler client) {
+        clientHandlers.remove(client);
     }
 }
 
@@ -46,17 +50,22 @@ class ClientHandler extends Thread {
     }
 
     public void sendMessage(String message) {
-        out.println(message);
+        if (out != null) {
+            out.println(message);
+        }
     }
 
+    @Override
     public void run() {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            out.println("Enter your name: ");
-            name = in.readLine();
-            System.out.println(name + " joined the chat!");
+            // <-- remove any prompt sent to client
+            // out.println("Enter your name: ");  // REMOVE THIS LINE
+            name = in.readLine(); // read name sent from login GUI
+            System.out.println(name + " joined the chat");
+            ChatServer.broadcast(name + " has joined the chat!", this);
 
             String message;
             while ((message = in.readLine()) != null) {
@@ -64,7 +73,15 @@ class ClientHandler extends Thread {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(name + " disconnected");
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ChatServer.removeClient(this);
+            ChatServer.broadcast(name + " has left the chat.", this);
         }
     }
 }
