@@ -1,3 +1,7 @@
+// ChatServer.java
+// A simple TCP chat server using Java sockets
+// It accepts multiple clients and broadcasts messages
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
