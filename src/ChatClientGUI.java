@@ -22,12 +22,27 @@ public class ChatClientGUI {
         loginButton.addActionListener(e -> {
             username = usernameField.getText();
             loginFrame.dispose();
+
+            JFrame chatFrame = new JFrame("Chat App");
+            JTextArea chatArea = new JTextArea();
+            chatArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(chatArea);
+            scrollPane.setBounds(10, 10, 360, 400);
+
+            chatFrame.setLayout(null);
+            chatFrame.add(scrollPane);
+            chatFrame.setSize(400, 500);
+            chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            chatFrame.setVisible(true);
+
             try {
                 Socket socket = new Socket("localhost", 5000);
-                System.out.println("Connected to server as " + username);
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                out.println(username);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
     }
 }
+
