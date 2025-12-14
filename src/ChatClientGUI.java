@@ -1,27 +1,29 @@
 import javax.swing.*;
 
 public class ChatClientGUI {
+    static String username;
+
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Chat App");
-        JTextArea chatArea = new JTextArea();
-        chatArea.setEditable(false);
+        // Login window
+        JFrame loginFrame = new JFrame("Login");
+        JTextField usernameField = new JTextField();
+        JButton loginButton = new JButton("Login");
 
-        JTextField inputField = new JTextField();
-        JButton sendButton = new JButton("Send");
+        loginFrame.setLayout(null);
+        usernameField.setBounds(50, 50, 200, 30);
+        loginButton.setBounds(50, 100, 100, 30);
 
-        frame.setLayout(null);
-        chatArea.setBounds(10, 10, 360, 400);
-        inputField.setBounds(10, 420, 260, 30);
-        sendButton.setBounds(280, 420, 90, 30);
+        loginFrame.add(usernameField);
+        loginFrame.add(loginButton);
+        loginFrame.setSize(300, 200);
+        loginFrame.setVisible(true);
 
-        frame.add(chatArea);
-        frame.add(inputField);
-        frame.add(sendButton);
-
-        frame.setSize(400, 500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        loginButton.addActionListener(e -> {
+            username = usernameField.getText();
+            loginFrame.dispose();
+        });
     }
 }
+
 
 
