@@ -1,10 +1,11 @@
 import javax.swing.*;
+import java.io.*;
+import java.net.*;
 
 public class ChatClientGUI {
     static String username;
 
     public static void main(String[] args) {
-        // Login window
         JFrame loginFrame = new JFrame("Login");
         JTextField usernameField = new JTextField();
         JButton loginButton = new JButton("Login");
@@ -21,9 +22,12 @@ public class ChatClientGUI {
         loginButton.addActionListener(e -> {
             username = usernameField.getText();
             loginFrame.dispose();
+            try {
+                Socket socket = new Socket("localhost", 5000);
+                System.out.println("Connected to server as " + username);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
     }
 }
-
-
-
